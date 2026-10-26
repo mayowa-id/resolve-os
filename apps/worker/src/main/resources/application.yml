@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: resolveos-worker
+  main:
+    web-application-type: none
+    keep-alive: true
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+resolveos:
+  worker:
+    temporal-enabled: false

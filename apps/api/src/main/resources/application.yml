@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: resolveos-api
+  datasource:
+    url: ${RESOLVEOS_DB_URL:jdbc:postgresql://localhost:5432/resolveos}
+    username: ${RESOLVEOS_DB_USER:resolveos}
+    password: ${RESOLVEOS_DB_PASSWORD:resolveos_local_only}
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${RESOLVEOS_OIDC_ISSUER:http://localhost:8180/realms/resolveos}
+          audiences: ${RESOLVEOS_OIDC_AUDIENCE:resolveos-api}
+server:
+  port: ${RESOLVEOS_API_PORT:8080}
+  shutdown: graceful
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never

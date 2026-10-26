@@ -1,0 +1,28 @@
+{
+  "realm": "resolveos",
+  "enabled": true,
+  "displayName": "ResolveOS local development",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "clients": [
+    {
+      "clientId": "resolveos-api",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:3000"]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {"name": "ORG_ADMIN"},
+      {"name": "OPERATIONS_MANAGER"},
+      {"name": "IMPLEMENTATION_OPERATOR"},
+      {"name": "IMPLEMENTATION_MANAGER"},
+      {"name": "AUDITOR"}
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+# ResolveOS private implementation handoff (local source material)
+/RESOLVEOS_CODEX_MASTER_PLAN.md
+/RESOLVEOS_CODEX_KICKOFF_PROMPT.md
+/RESOLVEOS_AGENTS.md
+
+# Build output
+target/
+**/target/
+*.class
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+
+# IDE and operating-system files
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+.DS_Store
+Thumbs.db
+
+# Logs, coverage, and temporary files
+*.log
+coverage/
+.tmp/
+tmp/
+
+# Frontend artifacts (Milestone 9)
+node_modules/
+.next/
+
