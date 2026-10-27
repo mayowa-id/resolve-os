@@ -14,7 +14,8 @@ Do not expose the local admin interfaces to a non-local network. Compose binds p
 
 | Service | Default address |
 |---|---|
-| PostgreSQL | `localhost:5432` |
+| ResolveOS API | `http://localhost:18080` |
+| PostgreSQL | `localhost:55432` |
 | Keycloak | `http://localhost:8180` |
 | MinIO API / console | `http://localhost:9000` / `http://localhost:9001` |
 | Mailpit UI | `http://localhost:8025` |
@@ -29,5 +30,10 @@ Start the API and worker in separate terminals. The API requires PostgreSQL and 
 .\mvnw.cmd -pl apps/worker -am spring-boot:run
 ```
 
-Stop local dependencies with `docker compose --env-file .env -f infra/compose.yaml down`. Add `--volumes` only when deliberately discarding all local development data.
+From WSL/Linux, the automated Milestone 0 runtime check starts both processes temporarily, checks API health and the Flyway baseline, and then shuts them down:
 
+```bash
+./infra/scripts/verify-bootstrap.sh
+```
+
+Stop local dependencies with `docker compose --env-file .env -f infra/compose.yaml down`. Add `--volumes` only when deliberately discarding all local development data.

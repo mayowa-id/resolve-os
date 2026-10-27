@@ -2,54 +2,70 @@
 
 ## 1. Milestone and status
 
-Milestone 0 — PARTIAL pending executable build and local-stack health verification.
+Milestone 0 - DONE.
 
 ## 2. Delivered behavior
 
-- Maven multi-module architecture and two Spring Boot composition roots.
-- API security defaults: public detail-free health, authenticated remainder.
-- Independently bootable non-web worker context with Temporal intentionally disabled.
-- Flyway baseline and pinned local-development infrastructure.
-- CI baseline for reactor verification, Compose validation, and secret scanning.
-- Persistent engineering, architecture, threat, dependency, and development guidance.
+- Java 25 / Spring Boot 4.1.2 Maven reactor with nine modules and reproducible `only-script` Maven Wrapper.
+- Secured API composition root: public detail-free health endpoint and authenticated application routes.
+- Independently bootable, non-web worker composition root; no premature Temporal jobs.
+- Flyway-enabled PostgreSQL baseline with Hibernate schema validation and Open Session in View disabled.
+- Pinned local PostgreSQL, Keycloak, S3-compatible storage, Mailpit, Temporal, and Temporal UI services.
+- Automated bootstrap runtime check for API health, real PostgreSQL migration, and worker startup.
+- CI baseline for Maven verification, Compose model validation, and secret scanning.
+- Persistent engineering rules, architecture, decisions, dependency record, threat model, and local-development guide.
 
 ## 3. Files changed
 
-Root build/rules, API and worker applications/tests, module POMs, infrastructure configuration, CI, and documentation were created for Milestone 0.
+- Root: Maven parent/wrapper, `.gitignore`, `.env.example`, `AGENTS.md`, and `README.md`.
+- Applications: API/worker POMs, composition roots, configuration, and tests.
+- Modules: contracts, domain, application, persistence, integrations, and agent boundaries.
+- Infrastructure: Compose stack, Keycloak realm, and `verify-bootstrap.sh`.
+- CI/docs: baseline workflow and architecture, decision, dependency, threat, development, and status records.
 
 ## 4. Database migrations
 
-- `V001__platform_baseline.sql`: creates a non-domain singleton installation marker. It is additive and non-destructive.
+- `V001__platform_baseline.sql`: creates a singleton installation marker using PostgreSQL-compatible `timestamp with time zone`. Additive and non-destructive.
+- Verified against H2 in the fast application-context test and PostgreSQL 18.6 in the runtime smoke check.
 
 ## 5. Commands executed and results
 
-- Toolchain inspection: Windows has no Java, Maven, or Docker on `PATH`; WSL has Docker CLI and Git but no Java/Maven.
-- `.\mvnw.cmd --version`: failed as expected with `JAVA_HOME not found`; wrapper scripts are present, but JDK 25 is absent.
-- `docker compose -f infra/compose.yaml config --quiet` through WSL: blocked by `Access is denied` when entering the Windows-mounted workspace under the sandbox identity.
-- All nine `pom.xml` files parsed successfully as XML.
-- `git check-ignore -v` confirmed all three private handoff Markdown files are ignored.
-- Compose service health: not run because the daemon/workspace combination is unavailable from this environment.
+- `./mvnw --batch-mode --no-transfer-progress clean verify`: PASS; 9/9 reactor modules succeeded, 3 tests passed, 0 failed/skipped.
+- `docker compose ... ps -a`: PostgreSQL, Keycloak, MinIO-compatible storage, and Mailpit healthy; Temporal and Temporal UI running.
+- `infra/scripts/verify-bootstrap.sh`: PASS; API returned `UP`, migration row existed in PostgreSQL, worker reached started state.
+- POM XML, Keycloak realm JSON, ignore rules, and whitespace checks passed.
+- `git diff --check`: passed; line-ending conversion warnings reflect the Windows Git configuration.
 
 ## 6. Security/tenancy checks
 
-Health/security tests are present but not yet executed. Tenant behavior is deliberately deferred to Milestone 1.
+- Verified unauthenticated access to the detail-free health endpoint.
+- Verified an unauthenticated application route returns 401.
+- Admin services bind only to `127.0.0.1`; `.env` and common credential formats are ignored.
+- Tenant isolation is not implemented in Milestone 0 and is the primary Milestone 1 acceptance concern.
 
 ## 7. Assumptions and deviations
 
-- The private handoff Markdown files are ignored; the actionable root `AGENTS.md` is versioned.
-- Spring AI and Temporal SDK versions are pinned for compatibility records but runtime dependencies are deferred to their milestones.
-- See ADR-004 for the archived MinIO upstream risk.
+- Private handoff Markdown files remain ignored; the actionable root `AGENTS.md` is versioned.
+- Host ports use API `18080` and PostgreSQL `55432` because `8080` and `5432` were already occupied locally.
+- Spring AI and Temporal SDK versions are managed but runtime integrations remain deferred to their authorized milestones.
+- ADR-004 records the archived MinIO upstream and the exact community rebuild used for local development only.
 
 ## 8. Known gaps
 
-- Build and tests require JDK 25.
-- Compose services and health checks require a reachable Docker daemon and image pulls.
 - No business/domain functionality is expected in Milestone 0.
+- The local MinIO-compatible community image is not approved for production; production object storage must be resolved before Milestone 3.
+- JDK 25 emits upstream Maven/Mockito future-compatibility warnings; these do not fail the build and should be addressed as supported plugin versions become available.
 
 ## 9. How to run and verify locally
 
-Follow `docs/LOCAL_DEVELOPMENT.md`, then run the Maven reactor, Compose config, service health, API health, and worker startup checks.
+Follow `docs/LOCAL_DEVELOPMENT.md`. The repeatable checks are:
+
+```bash
+./mvnw clean verify
+docker compose --env-file .env -f infra/compose.yaml up -d --pull never
+./infra/scripts/verify-bootstrap.sh
+```
 
 ## 10. Next milestone
 
-After Milestone 0 is fully verified and explicitly accepted: Milestone 1 adds organizations, memberships, JWT validation, roles, tenant context, and isolation tests. Do not begin it automatically.
+Milestone 1 may now begin when explicitly authorized: organizations, memberships, validated JWT issuer/audience/signature, roles/permissions, tenant context, two synthetic tenants, and cross-tenant isolation tests.

@@ -1,6 +1,6 @@
 CREATE TABLE platform_bootstrap (
     id smallint PRIMARY KEY,
-    installed_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    installed_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT platform_bootstrap_singleton CHECK (id = 1)
 );
 
