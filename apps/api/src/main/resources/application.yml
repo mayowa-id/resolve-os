@@ -19,7 +19,7 @@ spring:
           audiences: ${RESOLVEOS_OIDC_AUDIENCE:resolveos-api}
           jws-algorithms: RS256
 server:
-  port: ${RESOLVEOS_API_PORT:8080}
+  port: ${PORT:${RESOLVEOS_API_PORT:8080}}
   shutdown: graceful
 management:
   endpoints:
