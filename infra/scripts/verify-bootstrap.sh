@@ -27,7 +27,7 @@ java -jar apps/api/target/resolveos-api-0.1.0-SNAPSHOT.jar >"$api_log" 2>&1 &
 api_pid=$!
 
 api_ready=false
-for _ in {1..90}; do
+for _ in {1..180}; do
   if ! kill -0 "$api_pid" 2>/dev/null; then
     break
   fi
@@ -48,6 +48,44 @@ echo
 bootstrap_id="$(docker exec resolveos-postgres-1 psql -U "${RESOLVEOS_DB_USER:-resolveos}" -d "${RESOLVEOS_DB_NAME:-resolveos}" -Atc 'select id from platform_bootstrap;')"
 if [[ "$bootstrap_id" != "1" ]]; then
   echo "Flyway bootstrap row was not found" >&2
+  exit 1
+fi
+
+token_response="$(curl --fail --silent --show-error \
+  --request POST \
+  --data-urlencode 'client_id=resolveos-api' \
+  --data-urlencode 'username=northwind-admin' \
+  --data-urlencode 'password=local-only' \
+  --data-urlencode 'grant_type=password' \
+  "http://localhost:${KEYCLOAK_PORT:-8180}/realms/resolveos/protocol/openid-connect/token")"
+access_token="$(sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p' <<<"$token_response")"
+if [[ -z "$access_token" ]]; then
+  echo "Keycloak did not issue the synthetic tenant token" >&2
+  exit 1
+fi
+
+organizations="$(curl --fail --silent --show-error \
+  --oauth2-bearer "$access_token" \
+  "http://127.0.0.1:${RESOLVEOS_API_PORT:-18080}/api/v1/me/organizations")"
+if [[ "$organizations" != *'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'* ]] ||
+   [[ "$organizations" == *'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'* ]]; then
+  echo "Tenant-scoped organization listing was incorrect" >&2
+  exit 1
+fi
+
+cross_tenant_status="$(curl --silent --output /dev/null --write-out '%{http_code}' \
+  --oauth2-bearer "$access_token" \
+  "http://127.0.0.1:${RESOLVEOS_API_PORT:-18080}/api/v1/organizations/bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")"
+if [[ "$cross_tenant_status" != "404" ]]; then
+  echo "Cross-tenant lookup returned $cross_tenant_status instead of 404" >&2
+  exit 1
+fi
+
+invalid_token_status="$(curl --silent --output /dev/null --write-out '%{http_code}' \
+  --oauth2-bearer 'not-a-signed-jwt' \
+  "http://127.0.0.1:${RESOLVEOS_API_PORT:-18080}/api/v1/me/organizations")"
+if [[ "$invalid_token_status" != "401" ]]; then
+  echo "Invalid token returned $invalid_token_status instead of 401" >&2
   exit 1
 fi
 
@@ -72,4 +110,4 @@ if [[ "$worker_ready" != true ]]; then
   exit 1
 fi
 
-echo "Bootstrap verification passed: API healthy, Flyway baseline present, worker started."
+echo "Bootstrap verification passed: API healthy, migrations present, tenant isolation enforced, worker started."
