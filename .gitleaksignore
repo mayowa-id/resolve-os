@@ -1,0 +1,2 @@
+# False positive: "Keycloak" followed by a component list was parsed as generic-api-key.
+58b9689237936c496018a843f809efa7b6913e76:docs/IMPLEMENTATION_STATUS.md:generic-api-key:13

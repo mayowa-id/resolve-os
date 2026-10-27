@@ -26,5 +26,4 @@ Start Flyway with a minimal singleton `platform_bootstrap` table. Domain schema 
 - Status: accepted with review note
 - Date: 2026-10-26
 
-Pin exact image tags rather than floating tags. MinIO is retained because it is required by the approved plan, but its upstream repository was archived in April 2026; reassess the production object-storage implementation before Milestone 3.
-
+Pin exact image tags rather than floating tags. MinIO's upstream repository was archived in April 2026, and the final October 2025 security release instructs container users to build from source instead of publishing an official image. Milestone 0 therefore uses an exact SourceMation rebuild for local development only. Before Milestone 3, select a supported production S3 provider or create and verify an image directly from the pinned official source; the community rebuild is not approved for production.

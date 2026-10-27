@@ -30,7 +30,7 @@ docker compose --env-file .env -f infra/compose.yaml up -d
 docker compose --env-file .env -f infra/compose.yaml ps
 ```
 
-All host-facing development ports bind to `127.0.0.1` and can be changed in `.env`. The defaults are PostgreSQL `5432`, Keycloak `8180`, MinIO `9000/9001`, Mailpit `1025/8025`, and Temporal `7233/8233`.
+All host-facing development ports bind to `127.0.0.1` and can be changed in `.env`. The defaults are API `18080`, PostgreSQL `55432`, Keycloak `8180`, MinIO `9000/9001`, Mailpit `1025/8025`, and Temporal `7233/8233`.
 
 ## Run the processes
 
@@ -39,7 +39,12 @@ All host-facing development ports bind to `127.0.0.1` and can be changed in `.en
 ./mvnw -pl apps/worker -am spring-boot:run
 ```
 
-The API exposes a public, detail-free health endpoint at `http://localhost:8080/actuator/health`. All other routes require a valid JWT. Milestone 1 will implement tenant memberships and role authorization.
+The API exposes a public, detail-free health endpoint at `http://localhost:18080/actuator/health`. All other routes require a valid JWT. Milestone 1 will implement tenant memberships and role authorization.
+
+With the infrastructure running and the reactor built, verify the bootstrap runtime with:
+
+```bash
+./infra/scripts/verify-bootstrap.sh
+```
 
 See [local development](docs/LOCAL_DEVELOPMENT.md), [architecture](docs/ARCHITECTURE.md), and [implementation status](docs/IMPLEMENTATION_STATUS.md).
-

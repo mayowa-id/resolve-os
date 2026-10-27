@@ -36,7 +36,8 @@ services:
     restart: unless-stopped
 
   minio:
-    image: quay.io/minio/minio:RELEASE.2025-10-15T17-29-55Z
+    # Local development only. See ADR-004 before selecting production object storage.
+    image: sourcemation/minio:RELEASE.2025-10-15T17-29-55Z-20261020
     command: ["server", "/data", "--console-address", ":9001"]
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-resolveos_local}
@@ -47,7 +48,9 @@ services:
     volumes:
       - minio-data:/data
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
+      # This minimal local-only image contains neither curl nor the MinIO client.
+      # Host smoke checks verify the HTTP readiness endpoint separately.
+      test: ["CMD", "pidof", "minio"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -75,7 +78,6 @@ services:
       POSTGRES_SEEDS: postgres
       POSTGRES_USER: ${RESOLVEOS_DB_USER:-resolveos}
       POSTGRES_PWD: ${RESOLVEOS_DB_PASSWORD:-resolveos_local_only}
-      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
     ports:
       - "127.0.0.1:${TEMPORAL_PORT:-7233}:7233"
     restart: unless-stopped
