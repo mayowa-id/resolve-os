@@ -10,7 +10,7 @@ Milestone 0 - DONE.
 - Secured API composition root: public detail-free health endpoint and authenticated application routes.
 - Independently bootable, non-web worker composition root; no premature Temporal jobs.
 - Flyway-enabled PostgreSQL baseline with Hibernate schema validation and Open Session in View disabled.
-- Pinned local PostgreSQL, Keycloak, S3-compatible storage, Mailpit, Temporal, and Temporal UI services.
+- Pinned local database, identity, storage, mail, and workflow services.
 - Automated bootstrap runtime check for API health, real PostgreSQL migration, and worker startup.
 - CI baseline for Maven verification, Compose model validation, and secret scanning.
 - Persistent engineering rules, architecture, decisions, dependency record, threat model, and local-development guide.
