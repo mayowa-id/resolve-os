@@ -30,10 +30,16 @@ Start the API and worker in separate terminals. The API requires PostgreSQL and 
 .\mvnw.cmd -pl apps/worker -am spring-boot:run
 ```
 
-From WSL/Linux, the automated Milestone 0 runtime check starts both processes temporarily, checks API health and the Flyway baseline, and then shuts them down:
+From WSL/Linux, the automated runtime check starts both processes temporarily, validates migrations, obtains a signed Keycloak token, proves tenant isolation, rejects an invalid token, and then shuts them down:
 
 ```bash
 ./infra/scripts/verify-bootstrap.sh
 ```
 
 Stop local dependencies with `docker compose --env-file .env -f infra/compose.yaml down`. Add `--volumes` only when deliberately discarding all local development data.
+
+## Synthetic organizations and users
+
+The `local` Spring profile seeds Northwind Labs and Contoso Systems. Keycloak imports `northwind-admin`, `northwind-operator`, and `contoso-admin`; each uses the local-only password `local-only`. These identities must never be copied into a deployed environment.
+
+The API discovers tenancy from the token subject and database membership. It intentionally ignores organization or role claims supplied in a token.
