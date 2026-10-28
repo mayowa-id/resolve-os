@@ -16,5 +16,6 @@ Versions were checked against authoritative project release pages on 2026-10-26.
 | Mailpit image | 1.32.0 | Local mail capture | MIT |
 | Temporal server image | 1.29.7 | Local durable workflow service | MIT |
 | Temporal UI image | 2.57.0 | Local workflow inspection | MIT |
+| Eclipse Temurin JDK/JRE image | 25.0.4.1_1-noble | Reproducible API build and runtime | GPL-2.0 with Classpath Exception |
 
 Do not add dependencies without recording their version source, maintenance status, purpose, and license compatibility.

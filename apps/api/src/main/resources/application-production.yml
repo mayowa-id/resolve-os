@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: ${RESOLVEOS_DB_URL}
+    username: ${RESOLVEOS_DB_USER}
+    password: ${RESOLVEOS_DB_PASSWORD}
+    hikari:
+      maximum-pool-size: ${RESOLVEOS_DB_POOL_SIZE:5}
+      minimum-idle: 0
+  flyway:
+    locations: classpath:db/migration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${RESOLVEOS_OIDC_ISSUER}
+          audiences: ${RESOLVEOS_OIDC_AUDIENCE}
+          jws-algorithms: RS256
+
+server:
+  forward-headers-strategy: framework
+
+management:
+  endpoint:
+    health:
+      show-details: never

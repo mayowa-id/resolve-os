@@ -24,6 +24,8 @@ jobs:
         run: ./mvnw --batch-mode --no-transfer-progress clean verify
       - name: Validate Compose model
         run: docker compose -f infra/compose.yaml config --quiet
+      - name: Build production API image
+        run: docker build --tag resolveos-api:ci .
 
   secrets:
     runs-on: ubuntu-latest

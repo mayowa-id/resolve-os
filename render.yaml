@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: resolveos
+    runtime: docker
+    region: ohio
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /actuator/health/readiness
+    autoDeployTrigger: checksPass
+    maxShutdownDelaySeconds: 60
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=70 -XX:InitialRAMPercentage=20 -XX:+ExitOnOutOfMemoryError
+      - key: RESOLVEOS_DB_POOL_SIZE
+        value: "5"
+      - key: RESOLVEOS_DB_URL
+        sync: false
+      - key: RESOLVEOS_DB_USER
+        sync: false
+      - key: RESOLVEOS_DB_PASSWORD
+        sync: false
+      - key: RESOLVEOS_OIDC_ISSUER
+        sync: false
+      - key: RESOLVEOS_OIDC_AUDIENCE
+        sync: false

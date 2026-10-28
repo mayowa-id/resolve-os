@@ -41,3 +41,10 @@ Treat the validated JWT subject as identity, but resolve organizations and roles
 - Date: 2026-10-27
 
 Import three synthetic Keycloak users and seed matching memberships in a local-profile-only repeatable Flyway migration. Production environments never load these fixtures. Local direct password grants exist solely for automated smoke verification; production clients use the external OIDC provider's approved interactive flow.
+
+## ADR-007: Portable Render preview deployment
+
+- Status: accepted
+- Date: 2026-10-27
+
+Deploy only the API to Render as a Docker web service, with Neon PostgreSQL and an external standards-compliant OIDC provider. Keep the image provider-neutral, accept configuration only through environment variables, and retain Flyway as the sole schema mechanism. Do not deploy the unused worker or local-only Keycloak, Temporal, MinIO, and Mailpit services. This is a preview topology rather than the production architecture.
