@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
     "RESOLVEOS_DB_PASSWORD=",
     "RESOLVEOS_OIDC_ISSUER=https://issuer.invalid/resolveos",
     "RESOLVEOS_OIDC_AUDIENCE=resolveos-api",
+    "RESOLVEOS_WEB_ALLOWED_ORIGINS=https://resolveos.example",
     "PORT=0"
 })
 @ActiveProfiles("production")

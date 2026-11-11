@@ -1,0 +1,58 @@
+:root {
+  color-scheme: dark;
+  --background: #07110f;
+  --panel: rgba(15, 35, 30, 0.82);
+  --line: rgba(143, 255, 205, 0.18);
+  --text: #effff8;
+  --muted: #a7c7ba;
+  --accent: #79f2b5;
+  --danger: #ffaaa4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 75% 15%, rgba(44, 180, 124, 0.18), transparent 34rem),
+    linear-gradient(145deg, #06100e, #0a1915 55%, #07110f);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+button {
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  color: #062016;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 750;
+  padding: 0.85rem 1.25rem;
+}
+
+button:disabled { cursor: wait; opacity: 0.65; }
+button.secondary { background: transparent; border: 1px solid var(--line); color: var(--text); }
+
+.shell { margin: 0 auto; max-width: 70rem; padding: 8vh 1.5rem 4rem; }
+.hero { max-width: 48rem; }
+.eyebrow, .label { color: var(--accent); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.hero h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); letter-spacing: -0.06em; line-height: 0.94; margin: 1rem 0; }
+.hero p, .panel p { color: var(--muted); font-size: 1.05rem; line-height: 1.65; }
+.panel { backdrop-filter: blur(24px); background: var(--panel); border: 1px solid var(--line); border-radius: 1.5rem; margin-top: 3rem; padding: clamp(1.25rem, 4vw, 2.5rem); }
+.panel h2 { font-size: 1.6rem; margin-top: 0; }
+.account, .results article { align-items: center; display: flex; gap: 1rem; justify-content: space-between; }
+.account { border-bottom: 1px solid var(--line); margin-bottom: 1.5rem; padding-bottom: 1.5rem; }
+.account strong { display: block; margin-top: 0.4rem; }
+.results { display: grid; gap: 0.8rem; margin-top: 2rem; }
+.results article { background: rgba(255, 255, 255, 0.035); border: 1px solid var(--line); border-radius: 1rem; padding: 1rem; }
+.results h3, .results p { margin: 0; }
+.status { background: rgba(121, 242, 181, 0.12); border-radius: 999px; color: var(--accent); font-size: 0.75rem; padding: 0.4rem 0.65rem; }
+.error, .notice { border: 1px solid currentColor; border-radius: 0.8rem; margin-top: 1rem; padding: 0.9rem; }
+.error { color: var(--danger); }
+.notice { color: #ffdc8b; }
+
+@media (max-width: 40rem) {
+  .account { align-items: flex-start; flex-direction: column; }
+}

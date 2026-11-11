@@ -36,4 +36,6 @@ tmp/
 # Frontend artifacts (Milestone 9)
 node_modules/
 .next/
+out/
+*.tsbuildinfo
 
