@@ -17,5 +17,10 @@ Versions were checked against authoritative project release pages on 2026-10-26.
 | Temporal server image | 1.29.7 | Local durable workflow service | MIT |
 | Temporal UI image | 2.57.0 | Local workflow inspection | MIT |
 | Eclipse Temurin JDK/JRE image | 25.0.4.1_1-noble | Reproducible API build and runtime | GPL-2.0 with Classpath Exception |
+| Node.js | 24 | Verification UI build toolchain | MIT |
+| Next.js | 16.4.6 | Static verification UI framework | MIT |
+| React / React DOM | 19.3.1 | Verification UI rendering | MIT |
+| Auth0 React SDK | 2.30.0 | Browser OIDC/OAuth client | MIT |
+| TypeScript | 7.0.2 | Verification UI type checking | Apache-2.0 |
 
 Do not add dependencies without recording their version source, maintenance status, purpose, and license compatibility.

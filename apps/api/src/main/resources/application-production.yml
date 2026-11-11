@@ -23,3 +23,7 @@ management:
   endpoint:
     health:
       show-details: never
+
+resolveos:
+  web:
+    allowed-origins: ${RESOLVEOS_WEB_ALLOWED_ORIGINS}

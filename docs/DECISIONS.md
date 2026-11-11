@@ -48,3 +48,10 @@ Import three synthetic Keycloak users and seed matching memberships in a local-p
 - Date: 2026-10-27
 
 Deploy only the API to Render as a Docker web service, with Neon PostgreSQL and an external standards-compliant OIDC provider. Keep the image provider-neutral, accept configuration only through environment variables, and retain Flyway as the sole schema mechanism. Do not deploy the unused worker or local-only Keycloak, Temporal, MinIO, and Mailpit services. This is a preview topology rather than the production architecture.
+
+## ADR-008: Thin deployment verification UI
+
+- Status: accepted
+- Date: 2026-11-11
+
+Use a static-exported Next.js single-page application on Vercel to verify Auth0 login and a tenant-safe Render API read against Neon. Keep it intentionally limited to authentication and organization discovery. It is a deployment probe, not the Milestone 9 operator dashboard, and therefore must not accumulate product workflows before their owning milestones are authorized.

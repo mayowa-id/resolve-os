@@ -26,3 +26,5 @@ services:
         sync: false
       - key: RESOLVEOS_OIDC_AUDIENCE
         sync: false
+      - key: RESOLVEOS_WEB_ALLOWED_ORIGINS
+        sync: false

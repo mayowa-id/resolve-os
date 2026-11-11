@@ -2,7 +2,7 @@
 
 ## 1. Milestone and status
 
-Milestone 1 - DONE. Render deployment readiness - DONE; external deployment not yet executed.
+Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to-end verification pending.
 
 ## 2. Delivered behavior
 
@@ -12,6 +12,8 @@ Milestone 1 - DONE. Render deployment readiness - DONE; external deployment not 
 - OIDC resource-server validation enforces issuer, audience, timestamps, and RS256 signatures.
 - Local-only Keycloak and PostgreSQL fixtures provide three users across two tenants.
 - Provider-neutral API container and Render Blueprint support an external PostgreSQL/OIDC preview.
+- Static verification UI signs in through Auth0 and reads database-authoritative organizations from the API.
+- Explicit CORS configuration limits browser API access to configured origins.
 
 ## 3. Files changed
 
@@ -21,6 +23,7 @@ Milestone 1 - DONE. Render deployment readiness - DONE; external deployment not 
 - Infrastructure: Keycloak users/client mapper and expanded authenticated runtime verification.
 - Tests/docs: tenant authorization scenarios, contract, decisions, threat model, and local guide.
 - Deployment: hardened Docker image, production profile, Render Blueprint, bootstrap SQL, and verification scripts.
+- Verification UI: static Next.js application, Auth0 SPA integration, Vercel configuration guide, and CI checks.
 
 ## 4. Database migrations
 
@@ -31,7 +34,9 @@ Milestone 1 - DONE. Render deployment readiness - DONE; external deployment not 
 
 ## 5. Commands executed and results
 
-- `./mvnw --batch-mode --no-transfer-progress clean verify`: PASS; 9/9 modules, 11 tests, zero failures/skips.
+- `./mvnw --batch-mode --no-transfer-progress clean verify`: PASS; 9/9 modules, 12 tests, zero failures/skips.
+- `npm run typecheck`: PASS for the verification UI.
+- `npm run build`: PASS; static export produced the root and not-found routes.
 - `docker compose ... up -d --force-recreate --wait keycloak`: PASS; updated realm imported and healthy.
 - `./infra/scripts/verify-bootstrap.sh`: PASS; signed login, PostgreSQL migrations, tenant isolation, and worker startup verified.
 - `docker build --tag resolveos-api:deployment-test .`: PASS with pinned Java 25 build/runtime images.
@@ -59,6 +64,7 @@ Milestone 1 - DONE. Render deployment readiness - DONE; external deployment not 
 - Fine-grained permissions beyond the current organization roles will be introduced with their owning features.
 - The local MinIO-compatible image remains unapproved for production and must be resolved before Milestone 3.
 - The Render/Neon/Auth0 deployment has not yet been executed or authenticated end-to-end.
+- The verification UI remains a deployment probe, not a product dashboard.
 - Any externally disclosed database credential must be rotated before deployment.
 
 ## 9. How to run and verify locally
@@ -71,8 +77,9 @@ docker compose --env-file .env -f infra/compose.yaml up -d --pull never
 ./infra/scripts/verify-bootstrap.sh
 docker build --tag resolveos-api:deployment-test .
 ./infra/scripts/verify-container.sh
+cd apps/web && npm ci && npm run typecheck && npm run build
 ```
 
 ## 10. Next milestone
 
-Configure the Render Blueprint with rotated Neon credentials and Auth0 issuer/audience, deploy, then run `infra/scripts/verify-deployment.sh`. Milestone 2 may begin only when explicitly authorized; no Milestone 2 business code has been added.
+Deploy the API and verification UI, follow `docs/VERIFICATION_UI.md`, and record the real end-to-end result. Milestone 2 may begin only when explicitly authorized; no Milestone 2 business code has been added on this branch.

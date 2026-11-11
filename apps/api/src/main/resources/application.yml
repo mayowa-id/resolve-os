@@ -31,3 +31,6 @@ management:
       probes:
         enabled: true
       show-details: never
+resolveos:
+  web:
+    allowed-origins: ${RESOLVEOS_WEB_ALLOWED_ORIGINS:http://localhost:3000}
