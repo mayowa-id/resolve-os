@@ -12,7 +12,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 - OIDC resource-server validation enforces issuer, audience, timestamps, and RS256 signatures.
 - Local-only Keycloak and PostgreSQL fixtures provide three users across two tenants.
 - Provider-neutral API container and Render Blueprint support an external PostgreSQL/OIDC preview.
-- Static verification UI signs in through Auth0 and reads database-authoritative organizations from the API.
+- Statically rendered verification UI signs in through Auth0 and reads database-authoritative organizations from the API.
 - Explicit CORS configuration limits browser API access to configured origins.
 
 ## 3. Files changed
@@ -24,6 +24,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 - Tests/docs: tenant authorization scenarios, contract, decisions, threat model, and local guide.
 - Deployment: hardened Docker image, production profile, Render Blueprint, bootstrap SQL, and verification scripts.
 - Verification UI: static Next.js application, Auth0 SPA integration, Vercel configuration guide, and CI checks.
+- Vercel configuration: repository-enforced Next.js framework and `.next` output directory.
 
 ## 4. Database migrations
 
@@ -36,7 +37,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 
 - `./mvnw --batch-mode --no-transfer-progress clean verify`: PASS; 9/9 modules, 12 tests, zero failures/skips.
 - `npm run typecheck`: PASS for the verification UI.
-- `npm run build`: PASS; static export produced the root and not-found routes.
+- `npm run build`: PASS; Vercel-compatible Next.js output produced the root and not-found routes.
 - `docker compose ... up -d --force-recreate --wait keycloak`: PASS; updated realm imported and healthy.
 - `./infra/scripts/verify-bootstrap.sh`: PASS; signed login, PostgreSQL migrations, tenant isolation, and worker startup verified.
 - `docker build --tag resolveos-api:deployment-test .`: PASS with pinned Java 25 build/runtime images.
@@ -65,6 +66,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 - The local MinIO-compatible image remains unapproved for production and must be resolved before Milestone 3.
 - The Render/Neon/Auth0 deployment has not yet been executed or authenticated end-to-end.
 - The verification UI remains a deployment probe, not a product dashboard.
+- Next.js remains pinned to the security-maintained 15.5 line until Vercel's Next.js 16 remote-builder regression is resolved.
 - Any externally disclosed database credential must be rotated before deployment.
 
 ## 9. How to run and verify locally

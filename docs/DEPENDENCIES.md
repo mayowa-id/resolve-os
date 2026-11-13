@@ -1,6 +1,6 @@
 # Dependency and license record
 
-Versions were checked against authoritative project release pages on 2026-10-26. Transitive dependencies remain governed by the Spring Boot BOM and will be captured by automated inventory/scanning as the build environment becomes available.
+Versions were last checked against authoritative project release pages on 2026-11-13. Java transitive dependencies remain governed by the Spring Boot BOM; frontend transitive dependencies are locked by npm and audited in CI/local verification.
 
 | Component | Version | Purpose | License |
 |---|---:|---|---|
@@ -18,9 +18,10 @@ Versions were checked against authoritative project release pages on 2026-10-26.
 | Temporal UI image | 2.57.0 | Local workflow inspection | MIT |
 | Eclipse Temurin JDK/JRE image | 25.0.4.1_1-noble | Reproducible API build and runtime | GPL-2.0 with Classpath Exception |
 | Node.js | 24 | Verification UI build toolchain | MIT |
-| Next.js | 16.4.6 | Static verification UI framework | MIT |
+| Next.js | 15.5.29 | Vercel-compatible verification UI framework | MIT |
 | React / React DOM | 19.3.1 | Verification UI rendering | MIT |
 | Auth0 React SDK | 2.30.0 | Browser OIDC/OAuth client | MIT |
-| TypeScript | 7.0.2 | Verification UI type checking | Apache-2.0 |
+| TypeScript | 6.0.3 | Verification UI type checking | Apache-2.0 |
+| PostCSS override | 8.5.32 | Patched transitive CSS processing dependency | MIT |
 
 Do not add dependencies without recording their version source, maintenance status, purpose, and license compatibility.

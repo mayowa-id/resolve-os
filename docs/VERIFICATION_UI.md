@@ -34,7 +34,9 @@ Import the GitHub repository into Vercel with these settings:
 - Root Directory: `apps/web`
 - Framework Preset: Next.js
 - Build Command: `npm run build`
-- Output Directory: `out`
+- Output Directory: `.next` (also enforced by `apps/web/vercel.json`)
+
+Do not set the Output Directory to `out`. Vercel's Next.js adapter needs the manifests generated in `.next`. If the project previously used `out`, change or clear that dashboard override before redeploying.
 
 Add these environment variables for Production and Preview:
 
