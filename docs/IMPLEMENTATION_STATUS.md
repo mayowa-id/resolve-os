@@ -12,7 +12,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 - OIDC resource-server validation enforces issuer, audience, timestamps, and RS256 signatures.
 - Local-only Keycloak and PostgreSQL fixtures provide three users across two tenants.
 - Provider-neutral API container and Render Blueprint support an external PostgreSQL/OIDC preview.
-- Static verification UI signs in through Auth0 and reads database-authoritative organizations from the API.
+- Statically rendered verification UI signs in through Auth0 and reads database-authoritative organizations from the API.
 - Explicit CORS configuration limits browser API access to configured origins.
 
 ## 3. Files changed
@@ -36,7 +36,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 
 - `./mvnw --batch-mode --no-transfer-progress clean verify`: PASS; 9/9 modules, 12 tests, zero failures/skips.
 - `npm run typecheck`: PASS for the verification UI.
-- `npm run build`: PASS; static export produced the root and not-found routes.
+- `npm run build`: PASS; Vercel-compatible Next.js output produced the root and not-found routes.
 - `docker compose ... up -d --force-recreate --wait keycloak`: PASS; updated realm imported and healthy.
 - `./infra/scripts/verify-bootstrap.sh`: PASS; signed login, PostgreSQL migrations, tenant isolation, and worker startup verified.
 - `docker build --tag resolveos-api:deployment-test .`: PASS with pinned Java 25 build/runtime images.

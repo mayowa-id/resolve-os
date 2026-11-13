@@ -54,4 +54,4 @@ Deploy only the API to Render as a Docker web service, with Neon PostgreSQL and 
 - Status: accepted
 - Date: 2026-11-11
 
-Use a static-exported Next.js single-page application on Vercel to verify Auth0 login and a tenant-safe Render API read against Neon. Keep it intentionally limited to authentication and organization discovery. It is a deployment probe, not the Milestone 9 operator dashboard, and therefore must not accumulate product workflows before their owning milestones are authorized.
+Use a statically rendered Next.js application deployed through Vercel's native Next.js adapter to verify Auth0 login and a tenant-safe Render API read against Neon. Keep it intentionally limited to authentication and organization discovery. It is a deployment probe, not the Milestone 9 operator dashboard, and therefore must not accumulate product workflows before their owning milestones are authorized.
