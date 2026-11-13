@@ -47,6 +47,8 @@ jobs:
           cache-dependency-path: apps/web/package-lock.json
       - name: Install web dependencies
         run: npm ci
+      - name: Audit production web dependencies
+        run: npm audit --omit=dev
       - name: Build verification UI
         run: npm run build
       - name: Type-check verification UI

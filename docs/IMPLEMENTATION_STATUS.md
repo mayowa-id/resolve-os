@@ -65,6 +65,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 - The local MinIO-compatible image remains unapproved for production and must be resolved before Milestone 3.
 - The Render/Neon/Auth0 deployment has not yet been executed or authenticated end-to-end.
 - The verification UI remains a deployment probe, not a product dashboard.
+- Next.js remains pinned to the security-maintained 15.5 line until Vercel's Next.js 16 remote-builder regression is resolved.
 - Any externally disclosed database credential must be rotated before deployment.
 
 ## 9. How to run and verify locally
