@@ -18,6 +18,13 @@ type LoadState =
   | { kind: "success"; organizations: Organization[] }
   | { kind: "error"; message: string };
 
+function authenticationMessage(message: string): string {
+  if (message.includes("Service not found")) {
+    return "The ResolveOS API audience is not registered in this Auth0 tenant. Create an Auth0 API with the exact identifier configured in NEXT_PUBLIC_AUTH0_AUDIENCE.";
+  }
+  return message;
+}
+
 export function VerificationConsole() {
   const { error, getAccessTokenSilently, isAuthenticated, isLoading, loginWithRedirect, logout, user } =
     useAuth0();
@@ -46,25 +53,66 @@ export function VerificationConsole() {
 
   return (
     <main className="shell">
+      <header className="topbar">
+        <a className="brand" href="/" aria-label="ResolveOS home">
+          <span className="brand-mark" aria-hidden="true">R</span>
+          <span>ResolveOS</span>
+        </a>
+        <div className="environment"><span aria-hidden="true" /> Verification environment</div>
+      </header>
+
       <section className="hero">
-        <span className="eyebrow">ResolveOS · verification slice</span>
-        <h1>Prove the platform path before building more.</h1>
-        <p>
-          This console verifies Auth0 authentication, Render API reachability, Neon persistence, and
-          tenant-safe membership resolution.
-        </p>
+        <div className="hero-copy">
+          <span className="eyebrow">Agentic operations layer / 001</span>
+          <h1>From intent to<br /><em>verified action.</em></h1>
+          <p>
+            ResolveOS turns complex operational intent into governed, traceable execution. This
+            environment proves the identity and tenant boundary beneath that system.
+          </p>
+        </div>
+        <div className="system-map" aria-hidden="true">
+          <div className="orbit orbit-one" />
+          <div className="orbit orbit-two" />
+          <div className="core"><span>R</span></div>
+          <span className="node node-one" />
+          <span className="node node-two" />
+          <span className="node node-three" />
+          <span className="map-label label-intent">Intent</span>
+          <span className="map-label label-policy">Policy</span>
+          <span className="map-label label-action">Action</span>
+        </div>
       </section>
 
       <section className="panel" aria-live="polite">
-        {isLoading ? <p>Checking your session…</p> : null}
-        {error ? <div className="error">Authentication failed: {error.message}</div> : null}
+        <div className="panel-heading">
+          <div>
+            <span className="eyebrow">Identity gateway</span>
+            <h2>{isAuthenticated ? "Tenant context established" : "Establish a secure session"}</h2>
+          </div>
+          <span className="panel-index">AUTH / 01</span>
+        </div>
+
+        <div className="signal-path" aria-label="Verification path">
+          <div className="signal-step active"><span>01</span><strong>Identity</strong></div>
+          <div className="signal-line" />
+          <div className={`signal-step ${isAuthenticated ? "active" : ""}`}><span>02</span><strong>Policy</strong></div>
+          <div className="signal-line" />
+          <div className={`signal-step ${state.kind === "success" ? "active" : ""}`}><span>03</span><strong>Tenant</strong></div>
+        </div>
+
+        {isLoading ? <p>Checking your session...</p> : null}
+        {error ? (
+          <div className="error">
+            <strong>Authentication failed</strong>
+            <span>{authenticationMessage(error.message)}</span>
+          </div>
+        ) : null}
 
         {!isLoading && !isAuthenticated ? (
           <>
-            <h2>Start the end-to-end check</h2>
-            <p>Auth0 will return an access token for the ResolveOS API audience.</p>
+            <p>Continue through the managed identity gateway to verify your ResolveOS access.</p>
             <button type="button" onClick={() => void loginWithRedirect()}>
-              Sign in with Auth0
+              Continue securely <span aria-hidden="true">-&gt;</span>
             </button>
           </>
         ) : null}
@@ -76,32 +124,25 @@ export function VerificationConsole() {
                 <span className="label">Authenticated identity</span>
                 <strong>{user?.name ?? user?.email ?? user?.sub}</strong>
               </div>
-              <button
-                className="secondary"
-                type="button"
-                onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-              >
+              <button className="secondary" type="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
                 Sign out
               </button>
             </div>
 
             <button type="button" disabled={state.kind === "loading"} onClick={() => void loadOrganizations()}>
-              {state.kind === "loading" ? "Calling ResolveOS…" : "Load my organizations"}
+              {state.kind === "loading" ? "Resolving tenant context..." : "Resolve tenant context"}
             </button>
 
-            {state.kind === "error" ? <div className="error">{state.message}</div> : null}
+            {state.kind === "error" ? <div className="error"><span>{state.message}</span></div> : null}
             {state.kind === "success" && state.organizations.length === 0 ? (
-              <div className="notice">Authentication works, but this Auth0 subject has no active membership yet.</div>
+              <div className="notice">Identity verified. This account has no active ResolveOS membership yet.</div>
             ) : null}
             {state.kind === "success" && state.organizations.length > 0 ? (
               <div className="results">
                 <span className="label">Verified tenant access</span>
                 {state.organizations.map((organization) => (
                   <article key={organization.id}>
-                    <div>
-                      <h3>{organization.name}</h3>
-                      <p>{organization.slug}</p>
-                    </div>
+                    <div><h3>{organization.name}</h3><p>{organization.slug}</p></div>
                     <span className="status">{organization.status}</span>
                   </article>
                 ))}
