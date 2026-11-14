@@ -4,8 +4,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "ResolveOS Verification",
-  description: "End-to-end identity and tenant verification console",
+  title: "ResolveOS | From intent to verified action",
+  description: "The agentic operations layer for governed, traceable execution.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

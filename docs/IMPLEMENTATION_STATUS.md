@@ -25,6 +25,7 @@ Milestone 1 - DONE. Deployment verification slice - IMPLEMENTED; external end-to
 - Deployment: hardened Docker image, production profile, Render Blueprint, bootstrap SQL, and verification scripts.
 - Verification UI: static Next.js application, Auth0 SPA integration, Vercel configuration guide, and CI checks.
 - Vercel configuration: repository-enforced Next.js framework and `.next` output directory.
+- Verification experience: agentic deep-blue visual system and actionable identity configuration errors.
 
 ## 4. Database migrations
 
